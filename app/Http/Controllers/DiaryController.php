@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Diary;
+use App\Models\User;
 use App\Http\Requests\CreateDiary;
 
 class DiaryController extends Controller
@@ -27,15 +29,30 @@ class DiaryController extends Controller
     {
         $diaries = Diary::orderBy('created_at', 'asc')->get();
 
-        return view('diary.main', compact('diaries'));
+        return view('diary.list', compact('diaries'));
     }
 
-    public function create(CreateDiary $request, Diary $diary)
+    public function showCreateForm()
     {
-        dd($request);
-        exit;
-        // $user_id = $request->user_id;
-
         return view('diary.create');
+    }
+
+    public function create(CreateDiary $request)
+    {
+        // dd($request);
+        $diary = new Diary;
+        $diary->user_id = Auth::user()->id;
+        $diary->title = $request->title;
+        $diary->content = $request->content;
+        $diary->save();
+        
+        return redirect()->route('diary.list')->with('message', '日記を登録しました。');
+    }
+
+    public function detail(int $id)
+    {
+        $diary = Diary::find($id);
+
+        return view('diary.detail', compact('diary'));
     }
 }
