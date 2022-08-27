@@ -27,7 +27,8 @@ class DiaryController extends Controller
      */
     public function index()
     {
-        $diaries = Diary::orderBy('created_at', 'asc')->get();
+        $diaries = Diary::where('user_id', Auth::user()->id)
+                    ->orderBy('created_at', 'asc')->paginate(3);
 
         return view('diary.list', compact('diaries'));
     }
@@ -45,7 +46,7 @@ class DiaryController extends Controller
         $diary->title = $request->title;
         $diary->content = $request->content;
         $diary->save();
-        
+
         return redirect()->route('diary.list')->with('message', '日記を登録しました。');
     }
 
@@ -54,5 +55,19 @@ class DiaryController extends Controller
         $diary = Diary::find($id);
 
         return view('diary.detail', compact('diary'));
+    }
+
+    public function showDeleteForm(int $id)
+    {
+        $diary = Diary::find($id);
+
+        return view('diary.delete', compact('diary'));
+    }
+
+    public function destroy(int $id)
+    {
+        Diary::find($id)->delete();
+
+        return redirect()->route('diary.list')->with('message', '日記を削除しました。');
     }
 }
