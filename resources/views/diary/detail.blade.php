@@ -3,11 +3,11 @@
 @section('content')
 <div class="col col-md-offset-3 col-md-12">
   <nav class="card">
-    <div class="card-header">
+    <div class="card-header text-white bg-secondary">
       <i class="fas fa-book-open"></i>&nbsp;日記詳細
     </div>
     <div class="card-body">
-        <!-- バリデーションエラー表示 -->
+      <!-- バリデーションエラー表示 -->
       @include('common.errors')
     </div>
 
@@ -17,7 +17,7 @@
           <div class="col-3">
             <label><strong>タイトル</strong></label>
           </div>
-          <div class="col-9">  
+          <div class="col-9">
             {{ $diary->title }}
           </div>
         </div>
@@ -26,7 +26,7 @@
           <div class="col-3">
             <label><strong>本文</strong></label>
           </div>
-          <div class="col-9">  
+          <div class="col-9">
             {{ $diary->content }}
           </div>
         </div>
@@ -50,7 +50,7 @@
           <div class="col-3">
             <label><strong>作成日時</strong></label>
           </div>
-          <div class="col-9">  
+          <div class="col-9">
             {{ $diary->created_at }}
           </div>
         </div>
@@ -59,19 +59,19 @@
           <div class="col-3">
             <label><strong>更新日時</strong></label>
           </div>
-          <div class="col-9">  
+          <div class="col-9">
             {{ $diary->updated_at }}
           </div>
         </div>
-
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
           <a class="btn btn-primary mt-5 mb-3" href="#">
             <i class="fas fa-edit"></i>&nbsp;編集</a>
-          <a class="btn btn-danger mt-5 ml-2 mb-3" href="#">
+          <a class="btn btn-danger mt-5 ml-2 mb-3" href="{{ route('diary.delete', ['id' => $diary->id]) }}">
             <i class="fas fa-trash"></i>&nbsp;削除</a>
         </div>
       </div>
     </div>
   </nav>
 </div>
+
 @endsection
